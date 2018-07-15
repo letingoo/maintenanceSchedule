@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+        .control-group{
+            /*padding-left: 10px;*/
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+              background-color: aliceblue;
+          }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                <button class="btn-open btn" type="button">打开版本</button>
+                <button class="btn-add btn" type="button" data-toggle="modal" data-target="#myModal">新建版本</button>
+                <button class="btn-delete btn" type="button">删除所选版本</button>
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+
+        </div>
+
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+
+        </div>
+        <table class="table" id="versionList"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-pagination-switch="true"
+               data-show-columns="true"></table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="document">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="legend" class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    版本管理
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form">
+                    <fieldset>
+                        <input type="hidden"  name="versionId"   value="">
+                        <input type="hidden"  name="creatorName"   value="admin">
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">版本名称</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="versionName"   class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Select Basic -->
+                            <label class="control-label">版本字典</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   name="versionDictName"></select>
+                            </div>
+
+                        </div>
+                        <div class="control-group">
+                        <!-- Text input-->
+                        <label class="control-label" for="input01">版本描述</label>
+                            <div class="controls">
+                                <input type="text"  name="versionDescription" placeholder="请添加描述" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn" class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<style>
+    /*.modal-content{*/
+        /*padding-left: 15px;*/
+        /*padding-right: 15px;*/
+    /*}*/
+</style>
+<div class="modal fade" id="progress_bar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">同步中，请稍候...
+            </div>
+            <div class="progress progress-striped active">
+                <div class="progress-bar progress-bar-info" role="progressbar"
+                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                    <span class="sr-only">40% 完成</span>
+                </div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+</script><script src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/versionControl/versionManage.js"></script>
+
+
+</html>

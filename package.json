@@ -1,0 +1,45 @@
+{
+  "name": "testproject",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "babeldir": "babel public --out-dir test",
+    "wt": "webpack",
+    "startC": "pm2 start ./bin/www -i 3",
+    "startS": "pm2 start ./bin/www",
+    "deleteC": "pm2 delete all",
+    "stopC": "pm2 stop all"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "~1.16.0",
+    "compression": "^1.7.2",
+    "connect-favicons": "git://github.com/theworkers/connect-favicons.git",
+    "connect-redis": "^3.3.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.0",
+    "ejs": "~2.5.5",
+    "exceljs": "^1.5.1",
+    "express": "~4.14.1",
+    "express-session": "^1.15.3",
+    "gulp-nodemon": "^2.2.1",
+    "iconv-lite": "^0.4.19",
+    "mongoose": "^5.0.0-rc2",
+    "morgan": "~1.7.0",
+    "multipart": "^0.1.5",
+    "multiparty": "^4.1.3",
+    "pm2": "^2.9.1",
+    "redis": "^2.8.0",
+    "serve-favicon": "~2.3.2",
+    "webpack": "^3.5.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "browser-sync": "^2.18.12",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  }
+}

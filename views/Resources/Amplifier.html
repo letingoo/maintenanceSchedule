@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>放大器管理</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+        .control-group{
+            /*padding-left: 10px;*/
+        }
+    </style>
+</head>
+<body>
+<!--求一更好传值法-->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                <button class="btn-edit btn" type="button">修改放大器</button>
+                <button class="btn-add btn" type="button" data-toggle="modal" data-target="#myModal">新建放大器</button>
+                <button class="btn-delete btn" type="button">删除放大器</button>
+                <button class="btn-save btn" type="button">保存更改</button>
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+        </div>
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+
+        </div>
+        <table class="table" id="list_amplifier"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-pagination-switch="true"
+               data-show-columns="true"></table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    放大器管理
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form">
+                    <fieldset>
+                        <!--<div id="legend" class="">-->
+                            <!--<legend class="">放大器</legend>-->
+                        <!--</div>-->
+
+                        <input type="hidden"  name="amplifierId" value=""  >
+                        <input type="hidden"  name="createrName"  value="" >
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >放大器名称</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="amplifierName"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <!-- Select Basic -->
+                            <label class="control-label">机盘类型</label>
+                            <div class="controls">
+                                <select   class="input-xlarge" name="diskType"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >增益</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="gain"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label">最大输入功率</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="maximumInputPower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >最大输出功率</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="maximumOutputPower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >最小输入功率</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="minimumInputPower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+            </fieldset>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" id="submitBtn" class="btn btn-submit" >
+                提交
+            </button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/util.js"></script>
+<script src="/javascripts/Resources/amplifier.js"></script>
+
+
+</html>

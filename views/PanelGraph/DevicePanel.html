@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>设备面板图</title>
+    <style>
+        body{
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div class="modal fade modal-s" id="modal_disk" role="dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    机盘管理
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form" id="form_bus_generate">
+                    <fieldset>
+                        <!--<div  class="">-->
+                            <!--<legend class="">机盘管理</legend>-->
+                        <!--</div>-->
+                        <input type="hidden"  name="netElementId"   value="<%= elementId %>">
+                        <input type="hidden"  name="diskId"   value="">
+                        <div class="control-group">
+                            <label class="control-label" for="input01">机盘名称</label>
+                            <div class="controls">
+                                <input type="text"   name="diskName"  class="input-xlarge">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">机盘类型</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   name="diskType"></select>
+                            </div>
+                        </div>
+                        <div class="control-group" style="display: none">
+                            <label class="control-label">机盘槽位</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   name="slotId"></select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-submit" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="javascripts/lib/twaver.js"></script>
+</script><script src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="javascripts/panelGraph/devicePanel.js"></script>
+
+
+</html>

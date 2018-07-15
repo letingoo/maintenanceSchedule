@@ -1,0 +1,48 @@
+/*拓扑图界面*/
+.network-panel >div:first-child{
+    background-color: #f0f8ff;
+
+}
+/*拓扑图界面按钮样式*/
+/*.nav-pills> li{*/
+    /*padding: 2px 2px;*/
+/*}*/
+/*.nav-pills > li:hover{*/
+    /*padding: 1px 1px;*/
+/*}*/
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus{
+    box-sizing: border-box;
+    /*color: white !important;*/
+    /*background-color: #c1d3e0;*/
+    background-color:#2196fc;
+}
+.nav-pills > li.active > a:hover,
+#btn_save.active >a:hover{
+    background-color: #F5F5F5;
+    border: 1px solid #DCDCDC;
+
+    color: #196EB8; !important;
+}
+/* end */
+/*保存按钮颜色为绿色*/
+/*#btn_save.active >a,*/
+/*#btn_save.active >a:focus{*/
+    /*background-color: #43b92f;*/
+/*}*/
+
+/* end */
+.panel-primary > .panel-heading {
+    color: #333;
+    background-color: #c6d7e4;
+    border-color: #c6d7e4;
+}
+.panel-primary > .panel-heading>.panel-title {
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+.btn-link{
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}

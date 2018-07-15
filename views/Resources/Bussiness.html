@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+        .control-group{
+            /*padding-left: 10px;*/
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                <button class="btn-open btn" type="button">编辑光通道</button>
+                <button class="btn-add btn" type="button" data-toggle="modal" data-target="#myModal">新增光通道</button>
+                <button class="btn-delete btn" type="button">删除光通道</button>
+                <button class="btn-save btn" type="button">保存更改</button>
+
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+
+        </div>
+
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+
+        </div>
+        <table class="table" id="bussinessList"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-pagination-switch="true"
+               data-show-columns="true"></table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    光通道
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal">
+                    <fieldset>
+                        <!--<div id="legend" class="">-->
+                            <!--<legend class="">光通道</legend>-->
+                        <!--</div>-->
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">光通道名称</label>
+                            <div class="controls">
+                                <input type="text" placeholder="请输入名称" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">主用路由</label>
+                            <div class="controls">
+                                <input type="text" placeholder="请填写路径" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">主用路由输出功率</label>
+                            <div class="controls">
+                                <input type="text" placeholder="请填写功率" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">主用路由频点</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">备用路由</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">备用路由输出功率</label>
+                            <div class="controls">
+                                <input type="text" placeholder="placeholder" class="input-xlarge">
+                                <p class="help-block">Supporting help text</p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Search input-->
+                            <label class="control-label">备用路由频点</label>
+                            <div class="controls">
+                                <input type="text" placeholder="placeholder" class="input-xlarge search-query">
+                                <p class="help-block">Supporting help text</p>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn" class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/util.js"></script>
+<script src="http://rapapi.org/rap.plugin.js?projectId=22257"></script>
+<script src="/javascripts/Resources/bussinessManage.js"></script>
+
+
+</html>

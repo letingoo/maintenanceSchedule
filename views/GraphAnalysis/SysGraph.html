@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+  <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+  <link href="/stylesheets/css/jquery-ui.min.css" rel="stylesheet">
+  <link href="/stylesheets/css/theme_graph.css" rel="stylesheet">
+  <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+  <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+  <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+
+  <style>
+    body{
+      height:100%;
+      width: 100%;
+      position: absolute;
+      overflow-y: hidden;
+      background-color: aliceblue;
+    }
+    .modal::-webkit-scrollbar {display:none}
+    .canvas-panel div{
+      padding: 5px;
+    }
+    .modal{
+      outline: none;
+    }
+    .modal-s .modal-dialog{
+      width: 250px;
+    }
+    .modal-header{
+        padding: 5px 15px;
+    }
+    .modal-footer{
+        text-align: center;
+    }
+
+    .network-panel {
+      /*background-color: rgba(86,61,124,.15);*/
+      /*border: 1px solid #ddd;*/
+      /*border: 1px solid rgba(86,61,124,.2);*/
+      border-radius: 5px;
+      position:relative;
+      /*overflow必须为visible 不然会引起IE11的移位问题*/
+      overflow: visible;
+      height: 90%;
+      width: 100%;
+      border-radius: inherit;
+    }
+    .row{
+      height: 100%;
+    }
+    .nav-pills .dropdown-menu{
+      min-width: 0;
+    }
+    .container-fluid{
+      height:100%;
+    }
+    .dropdown-menu li{
+      text-align: center;
+    }
+    .dropdown-menu li
+    .func-panel{
+      height: 5%;
+      width: 100%;
+      padding: inherit;
+      /*background-color: rgba(86,61,124,.15);*/
+      /*border: 1px solid #ddd;*/
+      /*border: 1px solid rgba(86,61,124,.2);*/
+      border-radius: 5px;
+    }
+    .canvas-panel{
+      height: 100%;
+      padding:0;
+    }
+    .func-panel{
+      position: relative;
+    }
+    #accordion{
+      display: none;
+      height:90%;
+    }
+    #accordion div{
+      /*padding: 0;*/
+      margin: 0;
+      /*background-color:#ffffff;*/
+
+    }
+    #accordion .panel-body{
+      background-color:#ffffff;
+    }
+    #accordion .panel{
+      padding: 2px;
+    }
+
+    .input-xlarge{
+      width: 150px;
+    }
+
+    .panel-title{
+      font-size: 14px;
+    }
+    .panel-body{
+      background-color:#ffffff;
+    }
+    .panel{
+      padding: 2px;
+    }
+
+    .table {
+      font-size: 13px;
+    }
+
+    th.equipClass {
+      font-family: arial, tahoma, helvetica, sans-serif;
+      font-weight: normal;
+    }
+
+    th.pathClass {
+      font-family: arial, tahoma, helvetica, sans-serif;
+      font-weight: normal;
+    }
+
+    .panel-title {
+      margin-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .panel-osnr{
+      /*background-color: rgba(86,61,124,.15);*/
+      border: 1px solid #ddd;
+      border: 1px solid rgba(86,61,124,.2);
+      border-radius: 5px;
+      overflow-y: scroll;
+    }
+
+
+
+  </style>
+
+  <title>TWaver HTML5</title>
+
+
+
+
+</head>
+<body >
+<div class="container-fluid ">
+  <!--<div class="tree-panel col-xs-3 col-md-3">-->
+  <!--<ul id="treeDemo" class="ztree"></ul>-->
+  <!--</div>-->
+  <div class="canvas-panel col-xs-12 col-md-12">
+    <div class="func-panel col-xs-9 col-md-9 ">
+      <ul class="nav nav-pills">
+        <li role="presentation" class="active">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            网络可靠性分析 <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#" id="keyEquipButton">关键点分析</a></li>
+            <li><a href="#" id="circuitRateButton">成环率分析</a></li>
+            <li><a href="#" id="diameterButton">网络直径分析</a></li>
+          </ul>
+        </li>
+
+
+        <li role="presentation" class="active" id="link_create"><a href="#">添加链路</a></li>
+        <li role="presentation" class="active dropdown">
+          <a class="dropdown-toggle" id="node_create" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" >
+            添加站点 <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <img src="images/otm.png"  data-target="model_netElement" id="otm1" >
+            </li>
+          </ul>
+        </li>
+        <li role="presentation" class="active" id="btn_save"><a href="#">保存</a></li>
+        <li role="presentation" id="refreshGraph" class="active" ><a href="#">刷新全网</a></li>
+      </ul>
+    </div>
+    <div id="input01" class="network-panel col-xs-9 col-md-9" >
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+
+<div class="modal fade modal-s ui-draggable-iframeFix" id="modal_node" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div  class="modal-header">
+        <h4 class="modal-title" >
+          网元
+        </h4>
+      </div>
+      <div class="modal-body">
+
+        <form class="form-horizontal modal-form1" method="post" action="/validateform">
+          <fieldset>
+            <input type="hidden" name="netElementId" val="">
+            <!--<div id="legend1" class="">-->
+              <!--<legend class="">网元</legend>-->
+            <!--</div>-->
+            <div class="control-group">
+              <!-- Text input-->
+              <label class="control-label" >设备名称</label>
+              <div class="controls">
+                <input type="text" name="netElementName"   placeholder="" class="input-xlarge">
+                <p class="help-block"></p>
+              </div>
+            </div>
+
+
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">设备类型</label>
+              <div class="controls">
+                <select   class="input-xlarge" name="netElementType">
+                  <option>OptiX DWDM OTM</option>
+                  <option>OptiX DWDM OLA</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">机盘类型</label>
+              <div class="controls">
+                <select   class="input-xlarge" name="diskType"></select>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">放大器类型</label>
+              <div class="controls">
+                <select   class="input-xlarge" name="amplifierName"></select>
+              </div>
+            </div>
+
+            <!-- Select Basic -->
+            <label class="control-label">所属环</label>
+            <div class="controls">
+              <div class="controls">
+                <select class="input-xlarge" name="circleId" >
+                  <option>北环</option>
+                  <option>东环</option>
+                  <option>西环</option>
+                </select>
+              </div>
+            </div>
+
+            <input type="hidden" name="coordinateX" val="">
+            <input type="hidden" name="coordinateY" val="">
+            <input type="hidden" name="netElementId" val="">
+            <input type="hidden" name="diskId" val="">
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-submit btn-node">提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+
+<div class="modal fade modal-s" id="modal_link" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div  class="modal-header">
+        <h4 class="modal-title" >
+          链路
+        </h4>
+      </div>
+      <div class="modal-body">
+
+        <form class="form-horizontal modal-form" method="post" action="/validateform">
+          <fieldset>
+            <input type="hidden" name="linkId" val="">
+            <!--<div id="legend" class="">-->
+              <!--<legend class="">链路</legend>-->
+            <!--</div>-->
+
+            <div class="control-group">
+
+              <!-- Text input-->
+              <label class="control-label" >链路名称</label>
+              <div class="controls">
+                <input type="text" name="linkName"  placeholder="" class="input-xlarge" divstyle="width:100px">
+              </div>
+            </div>
+
+            <div class="control-group">
+
+              <!-- Text input-->
+              <label class="control-label" for="input01">链路长度</label>
+              <div class="controls">
+                <input type="text"  name="linkLength" placeholder="" class="input-xlarge">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">链路损耗</label>
+              <div class="controls">
+                <input type="text"  name="linkLoss" placeholder="" class="input-xlarge">
+              </div>
+            </div>
+            <div class="control-group">
+
+              <!-- Select Basic -->
+              <label class="control-label">链路类型</label>
+              <div class="controls">
+                <div class="controls">
+                  <select class="input-xlarge" name="linkType" ></select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">起始站点</label>
+              <div class="controls">
+                <select class="input-xlarge" id="AendList"></select>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <!-- Select Basic -->
+              <label class="control-label">终止站点</label>
+              <div class="controls">
+                <select class="input-xlarge"  id="ZendList"></select>
+              </div>
+            </div>
+
+            <!-- Select Basic -->
+            <label class="control-label">所属环</label>
+            <div class="controls">
+              <div class="controls">
+                <select class="input-xlarge" name="circleId" >
+                  <option>北环</option>
+                  <option>东环</option>
+                  <option>西环</option>
+                </select>
+              </div>
+            </div>
+
+
+
+          </fieldset>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" id="submitBtn"  class="btn btn-submit btn-link" >
+          提交
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+
+
+
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="javascripts/lib/twaver.js"></script>
+<script type="text/javascript" src="/javascripts/lib/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/javascripts/lib/jquery.ztree.excheck.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/lib/jquery-ui.min.js"></script>
+
+<script type="text/javascript"  src="/javascripts/util.js"></script>
+<!--<script src="/libtest.js"></script>-->
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/sysGraph/NetAnalyse_webpack.js"></script>
+<script src="/javascripts/sysGraph/analysePanel.js"></script>
+<script src="/javascripts/sysGraph/BussinessRoute.js"></script>
+<script src="/javascripts/sysGraph/algorithms/FindPath.js"></script>
+<script src="/javascripts/components/CircleDisplayer.js"></script>
+
+<script src="javascripts/sysGraph/sysGraph.js"></script>
+</html>

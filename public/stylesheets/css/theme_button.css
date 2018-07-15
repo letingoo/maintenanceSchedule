@@ -1,0 +1,18 @@
+.btn ,.btn:focus{
+    box-sizing: border-box;
+    color: white;
+    background-color: #2196fc;
+
+}
+
+.btn:hover{
+    color: #196EB8;
+    background-color: #F5F5F5;
+    border: 1px solid #DCDCDC;
+
+}
+
+/*登录按钮背景为绿色*/
+.btn-login,.btn-login:hover{
+    background-color: #43b92f;
+}

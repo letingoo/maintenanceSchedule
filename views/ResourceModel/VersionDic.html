@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>版本字典管理</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+        .control-group{
+            /*padding-left: 10px;*/
+        }
+    </style>
+</head>
+<body>
+<!--求一更好传值法-->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                <button class="btn-edit btn" type="button">修改版本字典</button>
+                <button class="btn-add btn" type="button" data-toggle="modal" data-target="#myModal">新建版本字典</button>
+                <button class="btn-delete btn" type="button">删除字典</button>
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+
+        </div>
+
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+
+        </div>
+        <table class="table" id="list_dic"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-pagination-switch="true"
+               data-show-columns="true"></table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    版本字典
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form">
+                    <fieldset>
+                        <!--<div id="legend" class="">-->
+                            <!--<legend class="">版本字典</legend>-->
+                        <!--</div>-->
+
+                        <input type="hidden"  name="versionDictId"   value="">
+                        <input type="hidden"  name="creatorName"   value="">
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">版本字典名称</label>
+                            <div class="controls">
+                                <input type="text" placeholder="" name="versionDictName"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <label class="control-label" for="input01">版本字典描述</label>
+                        <div class="controls">
+                            <input type="text"  name="versionDictDescription" placeholder="请添加描述" class="input-xlarge">
+                            <p class="help-block"></p>
+                        </div>
+
+                        <div class="control-group resource" >
+                            <label class="control-label">资源管理选项</label>
+
+                            <!-- Multiple Checkboxes -->
+                            <div class="controls">
+                                <!-- Inline Checkboxes -->
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasNetElement"  value="hasNetElement">
+                                    网元
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasLink"   value="hasLink">
+                                    链路
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasLinkType"  value="hasLinkType">
+                                    链路类型
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasBussiness"  value="hasBussiness">
+                                    光通道
+                                </label>
+
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasAmplifier"  value="hasAmplifier">
+                                    放大器
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  datafield="hasDisk"  value="hasDisk">
+                                    机盘
+                                </label>
+                            </div>
+
+                        </div>
+                    <!--</div>-->
+
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn" class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+</script><script src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<!--<script src="http://rapapi.org/rap.plugin.js?projectId=22257"></script>-->
+<script src="/javascripts/resourceModel/versionDic.js"></script>
+
+
+</html>

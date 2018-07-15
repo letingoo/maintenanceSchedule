@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/css/theme.css">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <!--<link rel="import" href="/javascripts/Tab-Navigator.html">-->
+    <title>贵州电网省网OTN高速网络运行管理辅助决策支撑系统</title>
+    <style>
+        html, body { overflow-x: hidden;}
+        body
+        {
+            width: 100%;
+            /*background-image: url("images/background_main.jpg");*/
+            background-color : white;
+            height: 100%;
+            font-size: 16px;
+        }
+        footer { padding:20px 0 10px;text-align:center;font-weight:bold;border-top:1px solid #ddd;margin-top:30px;}
+
+        #content_wrapper:hover{
+            /*-webkit-box-shadow:0 0 20px #0CC;*/
+            /*-moz-box-shadow:0 0 20px #0CC;*/
+            /*box-shadow:0 0 20px #0CC;*/
+        }
+        #tab_page:hover{
+            /*-webkit-box-shadow:0 0 20px #0CC;*/
+            /*-moz-box-shadow:0 0 20px #0CC;*/
+            /*box-shadow:0 0 20px #0CC;*/
+
+        }
+        /*左边导航栏字体大小*/
+        .sidebar-label{
+            font-size: 16px;
+        }
+        .usr-info{
+            flex:0 0 12%;
+            display: flex;
+            color:#6495ED;
+            align-items: center;
+            justify-content: space-around;
+            white-space:nowrap;
+
+        }
+        #sidebar_left:hover{
+            /*-webkit-box-shadow:0 0 20px #0CC;*/
+            /*-moz-box-shadow:0 0 20px #0CC;*/
+            /*box-shadow:0 0 20px #0CC;*/
+        }
+        #tab_page,#content_wrapper,#sidebar_left{
+            transition-property:box-shadow;
+            transition-duration: 0.5s;
+            /*-webkit-box-shadow:0 0 10px #0CC;*/
+            /*-moz-box-shadow:0 0 10px #0CC;*/
+            /*box-shadow:0 0 10px #0CC;*/
+            border:  solid 1px #dcdcdc;
+        }
+        #sidebar_left,#sidebar_left *{
+            background-color:#f5f5f5;
+            color: #196EB8;          /*导航栏字体颜色*/
+        }
+        li span.fa{
+            /*visibility: hidden;*/
+            display: none;
+        }
+
+
+        #content_wrapper{
+            background-image: url("images/background.jpg");
+            background-repeat:no-repeat;
+            background-size: cover;
+            padding: 0;
+            opacity: 0.9;
+            margin-bottom: 0;
+            top: 93px;   /*高度为tab_page height和header_main height之和*/
+        }
+        #tab_page{
+            display:flex;
+            height:40px;
+            position: fixed;
+            left: 200px;
+            right: 0;
+            margin-top: 53px;     /* 和header_main图片高度一致*/
+            padding: 2px;
+            background-color : #F5F5F5;
+        }
+        #tab_navigator{
+            margin-left: 60px;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+
+        }
+        .page-header{
+            overflow: hidden;
+            margin: 0;
+            background-image: url("images/header_main.png");
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            height:53px;        /*和背景图片高度一致*/
+            position: fixed;
+            left: 0;
+            right: 0;
+            padding: 10px;
+        }
+        /*tab 栏选中时的颜色*/
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{
+            color: #FFFFFF !important;
+            background-color: #196EB8;
+        }
+        /*tab栏字体大小*/
+        .nav-tabs>li>a{
+            padding: 4px;
+            font-size: 14px;
+        }
+        /*左边导航栏到顶部距离，为header_main图片高度*/
+        #sidebar_left.affix{
+            top: 53px;
+        }
+        /* 给功能导航栏加底边框*/
+        .sidebar-menu > li:first-child {
+            border-bottom: solid 1px #dcdcdc;
+            margin-top: -12px;
+        }
+
+    </style>
+    <style>
+        .panel-group{max-height:770px;overflow: auto;}
+        .leftMenu{margin:10px;margin-top:5px;}
+        .leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+        .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+        .leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+        .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid pull-left" >
+    <div class="container-fluid pull-left page-header">
+    <aside id="sidebar_left" class="nano nano-primary affix has-scrollbar sidebar-default">
+
+        <!-- Start: Sidebar Left Content -->
+        <div class="sidebar-left-content nano-content" tabindex="0" style="right: -15px;">
+
+            <!-- Start: Sidebar Header -->
+            <header class="sidebar-header">
+
+                <!-- Sidebar Widget - Menu (Slidedown) -->
+                <div class="sidebar-widget menu-widget">
+                    <div class="row text-center mbn">
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- End: Sidebar Header -->
+
+            <!-- Start: Sidebar Left Menu -->
+            <ul class="nav sidebar-menu">
+                <li class="sidebar-label pt20">功能导航</li>
+                <li>
+                    <a class="accordion-toggle" href="#">
+                        <span class="fa fa-folder-open"></span>
+                        <span class="sidebar-title">OTN网络资源管理</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="nav sub-nav">
+                        <li><a href="#" page="VersionManage">版本管理</a></li>
+                        <li><a href="#" page="versionDic">版本字典管理</a></li>
+                        <li><a href="#" page="sync">资源同步</a></li>
+                        <li>
+                            <a class="accordion-toggle" id="resources"   href="#">
+                                <span class="sidebar-title">现网资源维护</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="nav sub-nav" id="resource_contents" >
+                                <li><a href="#" page="netElement">网元管理</a></li>
+                                <li><a href="#" page="link">链路管理</a></li>
+                                <li><a href="#" page="linkType">链路类型管理</a></li>
+                                <li><a href="#" page="amplifier">放大器管理</a></li>
+                                <li><a href="#" page="maintenanceRecord">检修单管理</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="accordion-toggle" href="#">
+                        <span class="fa fa-building"></span>
+                        <span class="sidebar-title">网络运行管理决策分析</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="nav sub-nav">
+                        <li><a href="#" page="sysGraph">网络层决策分析</a></li>
+                        <li><a href="#" page="osnrGraph">业务层决策分析</a></li>
+                    </ul>
+                </li>
+                <!-- sidebar resources -->
+                <li>
+                    <a class="accordion-toggle" page="riskOperation">
+                        <span class="fa fa-cogs"></span>
+                        <span class="sidebar-title">运维检修风险预警分析
+                            <!--<a href="#" page="riskOperation"></a>-->
+                        </span>
+                        <!--<span class="caret"></span>-->
+                    </a>
+                    <!--<ul class="nav sub-nav">-->
+                        <!--<li><a href="#" page="riskOperation">一次线路检修伴随的通信网检修风险预警分析</a></li>-->
+                        <!--<li><a href="#" page="riskOperation">通信例行检修的风险分析</a></li>-->
+                        <!--<li><a href="#" page="riskOperation">电力通信紧急检修（抢修）的风险分析</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <li>
+                    <a class="accordion-toggle" >
+                        <span class="fa fa-users "></span>
+                        <span class="sidebar-title">系统管理</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="nav sub-nav">
+                        <li><a href="#" page="UserManage">用户管理</a></li>
+                        <!--<li><a href="#" page="AuthorityManagement">权限管理</a></li>-->
+                    </ul>
+                </li>
+                <li>
+                    <a class="accordion-toggle" page="logout"  >
+                        <span class="fa fa-users "></span>
+                        <span class="sidebar-title">注销</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- End: Sidebar Menu -->
+
+
+
+        </div>
+
+        <!-- End: Sidebar Left Content -->
+
+
+        <div class="nano-pane" style="display: none;"><div class="nano-slider" style="height: 848px; transform: translate(0px, 0px);"></div></div></aside>
+
+        <!--同步信息查询-->
+
+
+</div>
+
+
+
+
+</div>
+
+<section id="tab_page"   class="container-fluid pull-left " >
+    <div class="usr-info">
+        <span id="usr-icon" class="fa fa-user"></span>
+        <span id="usr-data"> </span>
+    </div>
+</section>
+
+<section id="content_wrapper"  class="container-fluid pull-left well">
+
+</section>
+
+<div class="modal fade" id="modal_sync"  >
+    <div class="modal-dialog" style="width: max-content; top: 30%">
+        <div class="modal-content  " style="width: max-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    版本同步成功，资源变化情况如下：
+                </h4>
+            </div>
+            <div class="container-fluid">
+                <table></table>
+            </div>
+            <div class="modal-footer"  align="center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/lib/utility.js"></script>
+
+
+<script src="/javascripts/util.js"></script>
+<script src="/javascripts/components/NavigateBar.js"></script>
+<script src="/javascripts/components/ModalLocator.js"></script>
+<script src="/libtest.js"></script>
+<script src="/javascripts/main.js"></script>
+
+
+
+</html>

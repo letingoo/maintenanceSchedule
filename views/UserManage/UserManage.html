@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                    <button class="btn-edit btn"type="button">编辑用户</button>
+                    <button class="btn-add btn" type="button" data-toggle="modal" data-target="#myModal">新增用户</button>
+                    <button class="btn-delete btn" type="button">删除选中用户</button>
+            </div>
+        </div>
+        <div class="span9">
+            <div class="row-fluid">
+
+            </div>
+            <table class="table" id="UserList"></table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    添加
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal modal-form" >
+                    <fieldset>
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >用户名</label>
+                            <div class="controls">
+                                <input type="text" name="userName"  placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >密码</label>
+                            <div class="controls">
+                                <input type="text"  name="password" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Select Basic -->
+                            <label class="control-label">权限名称</label>
+                            <div class="controls">
+                                <select   class="input-xlarge" name="userRole">
+                                    <option>管理员</option>
+                                    <option>普通用户</option></select>
+                            </div>
+
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >所属单位</label>
+                            <div class="controls">
+                                <input type="text" name="userGroup" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn"  class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+</script><script src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/userManage/userManage.js"></script>
+
+</html>

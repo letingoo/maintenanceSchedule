@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                    <button class="btn-edit btn"type="button" >编辑条目</button>
+                    <button class="btn-add btn" type="button" data-toggle="modal" data-target="#modal_link" >增加条目</button>
+                    <button class="btn-delete btn" type="button">删除选中条目</button>
+                  <button class="btn-save btn" type="button">保存更改</button>
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+
+            </div>
+
+        </div>
+        <div class="span9">
+            <div class="row-fluid">
+
+            </div>
+            <table class="table" id="list_link"></table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_link" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    链路
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal modal-form" method="post" action="/validateform">
+                    <fieldset>
+                        <input type="hidden" name="linkId" val="">
+                        <!--<div id="legend" class="">-->
+                            <!--<legend class="">链路</legend>-->
+                        <!--</div>-->
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >链路名称</label>
+                            <div class="controls">
+                                <input type="text" name="linkName"  placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">链路长度</label>
+                            <div class="controls">
+                                <input type="text"  name="linkLength" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Select Basic -->
+                            <label class="control-label">链路类型</label>
+                            <div class="controls">
+                                <!--<select name="linkType" class="input-xlarge" id="linkTypeSelect"/>-->
+                                <!--<input type="text"  name="l inkType" placeholder="" class="input-xlarge">-->
+                                <select class="input-xlarge"   id="linkTypeSelect"></select>
+                                <p class="help-block"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Select Basic -->
+                            <label class="control-label">链路损耗</label>
+                            <div class="controls">
+                                <input type="text"  name="linkLoss" placeholder="" class="input-xlarge" id="linkLossInput">
+                                <p class="help-block"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">A端站点</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   id="AendList"></select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">Z端站点</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   id="ZendList"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group" id="circleDiv">
+                            <!-- Select Basic -->
+                            <label class="control-label">所属环</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   id="CircleList">
+                                    <option value="西环">西环</option>
+                                    <option value="东环">东环</option>
+                                    <option value="北环">北环</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn"  class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/util.js"></script>
+<script src="/javascripts/Resources/linkManage.js"></script>
+
+</html>

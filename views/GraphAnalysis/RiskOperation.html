@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_graph.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <style>
+        body{
+            height:100%;
+            width: 100%;
+            position: absolute;
+            overflow-y: hidden;
+            background-color: aliceblue;
+        }
+        .modal::-webkit-scrollbar {display:none}
+        table{
+            max-height: 900px;
+            max-width: 900px;
+        }
+        .canvas-panel div{
+            padding: 5px;
+        }
+        .modal{
+            outline: none;
+            max-width: 100% !important;
+        }
+
+        #modal_newRoute .modal-header{
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+
+        #modal_operation_list .modal-dialog{
+            width: 54%;
+        }
+        .double_column .container{
+            width: 100%;
+        }
+        .double_column .modal-dialog{
+            width: 54% ;
+        }
+        .network-panel {
+            /*background-color: rgba(86,61,124,.15);*/
+            /*border: 1px solid #ddd;*/
+            /*border: 1px solid rgba(86,61,124,.2);*/
+            border-radius: 5px;
+            position:relative;
+            /*overflow必须为visible 不然会引起IE11的移位问题*/
+            overflow: visible;
+            height: 90%;
+            width: 100%;
+            border-radius: inherit;
+        }
+        .row{
+            height: 100%;
+        }
+        .container-fluid{
+            height:100%;
+        }
+        .dropdown-menu li{
+            text-align: center;
+        }
+        .dropdown-menu li
+        .func-panel{
+            height: 5%;
+            width: 100%;
+            padding: inherit;
+            /*background-color: rgba(86,61,124,.15);*/
+            /*border: 1px solid #ddd;*/
+            /*border: 1px solid rgba(86,61,124,.2);*/
+            border-radius: 5px;
+        }
+        .canvas-panel{
+            height: 100%;
+            padding:0;
+        }
+        .func-panel{
+            position: relative;
+        }
+        #accordion{
+            display: none;
+            height:90%;
+        }
+        #accordion div{
+            padding: 0;
+            margin: 0;
+            /*background-color:#ffffff;*/
+
+        }
+        #accordion .panel-title{
+            font-size: 14px;
+        }
+        #accordion .panel-body{
+            background-color:#ffffff;
+        }
+        #accordion .panel{
+            padding: 2px;
+        }
+        .panel-osnr{
+            /*background-color: rgba(86,61,124,.15);*/
+            border: 1px solid #ddd;
+            border: 1px solid rgba(86,61,124,.2);
+            border-radius: 5px;
+            overflow-y: scroll;
+        }
+
+
+        table{
+            font-size: 13px;
+        }
+        .modal-footer{
+            text-align: center;
+        }
+        .modal-s .modal-dialog{
+            width: 250px;
+        }
+
+
+        /*#nxTableDiv{margin:0 0 20px;line-height:18px;}*/
+        #nxTableDiv .scroll{
+            max-height:330px;
+            overflow-y:auto;
+        }
+
+        #nxTableDiv table{
+            width:100%;
+            table-layout:fixed;
+        }
+
+        #nxTableDiv .nxTh1, #nxTableDiv .nxTd1{width:420px;}
+        #nxTableDiv .nxTh2, #nxTableDiv .nxTd2{width:120px;}
+        #nxTableDiv .nxTh3, #nxTableDiv .nxTd3{width:120px;}
+        #nxTableDiv .nxTh4 {width: 110px}
+        #nxTableDiv .nxTd4{width: calc(110px - 1em);}
+
+
+
+    </style>
+    <title>光通道仿真及优化</title>
+
+
+
+
+</head>
+<body>
+    <div class="container-fluid ">
+        <div class="canvas-panel col-xs-12 col-md-12">
+            <div class="func-panel col-xs-12 col-md-12 ">
+                <ul class="nav nav-pills">
+                    <!--<li role="presentation" id="check_all_net" class="active" ><a href="#">全网检修状态查看</a></li>-->
+                    <li role="presentation" id="risk_check_report" class="active"><a href="#">全网风险预警</a></li>
+                    <li role="presentation" id="risk_estimate_report" class="active" ><a href="#">业务风险评估</a></li>
+                    <li role="presentation" id="show_bus_list" class="active" ><a href="#">业务路由查看</a></li>
+                    <li role="presentation" id="show_operation_list" class="active" ><a href="#">检修单查看</a></li>
+                    <li role="presentation" id="refreshGraph" class="active" ><a href="#">刷新全网</a></li>
+                    <li role="presentation" id="justTest" class="active"><a href="#">测试</a></li>
+                </ul>
+            </div>
+            <div class="network-panel col-xs-9 col-md-9" >
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_usr_select" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <h4 class="modal-title" >
+                        检修路由切换
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-tableExport btn-default" title="导出数据" >
+                        <span class="glyphicon glyphicon-export"></span>
+                    </button>
+                    <table>
+                    </table>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-submit" data-dismiss="modal">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="modal_report_estimate" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="close" id="modal_report_estimate_close_button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" >
+                        业务风险评估
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table id="estimate" >
+                    </table>
+                    <table id="priSum" >
+                    </table>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="modal_report_check" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="close" id="modal_report_check_close_button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" >
+                        全网风险预警
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <!--<button type="button" class="btn btn-tableExport btn-default pull-right" title="导出数据">-->
+                        <!--<span class="glyphicon glyphicon-export" ></span>-->
+                    <!--</button>-->
+                    <table >
+                    </table>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <div class="modal fade" id="modal_bus_list" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="close" id="modal_bus_list_close_button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" >
+                        业务信息查看
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table >
+                    </table>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!--不可检修点寻找新路由-->
+    <div class="modal fade" id="modal_newRoute" tabindex="-1" role="dialog" aria-hidden="true" >
+        <div class="modal-dialog" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <a class="close" data-dismiss="modal">×</a>
+                        <h4>寻找新路由</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" role="form">
+                        选路策略
+                        <label class="radio-inline">
+                            <input type="radio" name="routeStrategy" id="minDistance" value="minDistance" checked="checked">最短路径
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="routeStrategy" id="loadBalance" value="loadBalance" >负载均衡
+                        </label>
+                    </form>
+                    <table class="table" id="newRouteList"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-updateRoute" >更新</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div>
+    </div>
+
+    <!--检修单查询-->
+    <div class="modal fade" id="modal_operation_list" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div  class="modal-header" >
+                    <button type="button" class="close pull-right" aria-label="close" id="modal_operation_list_close_button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title modal-body" style="overflow-y: hidden">
+                        检修单列表
+                    </h4>
+                </div>
+                <div class="modal-body">
+                        <input id="tpData" type="hidden" value=""/>
+                    <table>
+                    </table>
+                </div>
+
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <!--检修单详细信息查询-->
+    <div class="modal fade double_column" id="modal_operation_spec_list" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div  class="modal-header">
+                    <h4 class="modal-title" >
+                        检修单详细信息
+                    </h4>
+                </div>
+                <div class="container">
+                    <fieldset>
+                        <div class="control-group  row">
+                            <div class="controls  col-md-6 col-sm-6">
+                                 <label class="control-label" >检修单id</label>
+                                <input type="text" name="id"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >票据编号</label>
+                                <input type="text" name="idNo"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >申请单位</label>
+                                <input type="text" name="deptName"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >设备名称</label>
+                                <textarea  name="deviceName"  class="input-xlarge form-control" disabled="disabled">
+                                </textarea>
+                                <p class="help-block"></p>
+                            </div>
+
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >检修单类型</label>
+                                <input type="text" name="repairType"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >检修类别</label>
+                                <input type="text" name="rtype"  class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >申请人</label>
+                                <input type="text" name="deptMan"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >联系人</label>
+                                <input type="text" name="linkMan"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >申请人联系电话</label>
+                                <input type="text" name="mobilePhone"  placeholder=""class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >联系人联系电话</label>
+                                <input type="text" name="linkWayMobile"  placeholder="" class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >工作地点</label>
+                                <input type="text" name="rplace"  class="input-xlarge form-control" disabled="disabled">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6 ">
+                                <label class="control-label " >工作内容</label>
+                                <textarea rows="4" name="rcontent"  class="input-xlarge form-control" disabled="disabled">
+                                </textarea>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!--新建检修单-->
+    <div class="modal fade double_column" id="new_maintenance_record" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div  class="modal-header">
+                    <h4 class="modal-title" >
+                        新建检修单
+                    </h4>
+                </div>
+                <div class="container">
+                    <fieldset>
+                        <div class="control-group  row">
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >票据编号</label>
+                                <input type="text" name="idNo"  placeholder="" class="input-xlarge form-control" >
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >申请单位</label>
+                                <input type="text" name="deptName"  placeholder="" class="input-xlarge form-control" >
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >设备名称</label>
+                                <textarea  name="deviceName" placeholder=""  class="input-xlarge form-control"></textarea>
+                                <p class="help-block"></p>
+                            </div>
+
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >检修单类型</label>
+                                <input type="text" name="repairType"  placeholder="" class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >检修类别</label>
+                                <input type="text" name="rType"   placeholder=""  class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >申请人</label>
+                                <input type="text" name="deptMan"  placeholder="" class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >联系人</label>
+                                <input type="text" name="linkMan"  placeholder="" class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls  col-md-6 col-sm-6">
+                                <label class="control-label " >申请人联系电话</label>
+                                <input type="text" name="mobilePhone"  placeholder="" class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >联系人联系电话</label>
+                                <input type="text" name="linkWayMobile"  placeholder="" class="input-xlarge form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group row">
+                            <div class="controls col-md-6 col-sm-6">
+                                <label class="control-label " >工作地点</label>
+                                <input type="text" name="rPlace"  class="input-xlarge form-control" >
+                                <p class="help-block"></p>
+                            </div>
+                            <div class="controls col-md-6 col-sm-6 ">
+                                <label class="control-label " >工作内容</label>
+                                <textarea rows="4" name="rContent" placeholder=""  class="input-xlarge form-control"></textarea>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-submit" data-dismiss="modal">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--手动选择检修点-->
+    <div class="modal fade" id="modal_elements_list" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div  class="modal-header">
+                    <h4 class="modal-title" >
+                        手动选择检修
+                    </h4>
+                </div>
+                <div class="container-fluid form-inline">
+                    <select class="form-control"   id="element_type" name="element_type" >
+                        <option>站点</option>
+                        <option>链路</option>
+                    </select>
+                    <select class="form-control"  id="element_name" name="element_name" >
+
+                    </select>
+                    <label hidden="hidden" ></label>
+                </div>
+
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default btn-affirm" data-dismiss="modal" >确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">退出</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade modal-s" id="modal_operate_result" tabindex="-1" role="dialog"
+         aria-hidden="true" style="width: 340px">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <h4 class="modal-title" >
+                        检修结果
+                    </h4>
+                </div>
+                <div class="modal-body" style="width: 340px">
+
+                    <form class="form-horizontal modal-form" method="post" action="/validateform">
+                        <fieldset>
+                            <div class="control-group">
+                                <label class="control-label" id="alert-label">该检修单无法检修，情况如下：</label>
+                            </div>
+                            <div class="control-group">
+
+                                <!-- Text input-->
+                                <label class="control-label" >受影响业务</label>
+                                <div class="controls">
+                                    <input  readonly="readonly" type="text"  name="affectBus" placeholder="" class="input-xlarge">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <!-- Text input-->
+                                <label class="control-label" >中断业务</label>
+                                <div class="controls">
+                                    <input  readonly="readonly"  type="text" name="interruptBus"  placeholder="" class="input-xlarge" divstyle="width:100px">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div class="modal-footer" style="width: 330px">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left" id="confirmToExcelButton">确定</button>
+                    <button type="button" class="btn btn-default" id="show_operation_detail" style="float: left">查看详细信息</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+    <!--检修结果详细信息查看-->
+    <div class="modal fade" id="modal_operation_detail_list" >
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div  class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="close" id="modal_operation_detail_list_close_button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" >
+                        检修结果详细信息
+                    </h4>
+                </div>
+                <div class="container-fluid">
+                    <table>
+                    </table>
+                </div>
+
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="javascripts/lib/twaver.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/lib/jquery-ui.min.js"></script>
+<script src="/javascripts/lib/tableExport.js"></script>
+<script src="/javascripts/lib/bootstrap-table-export.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script type="text/javascript"  src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<!--<script src="/javascripts/sysGraph/algorithms/FindPath.js"></script>-->
+<script src="/javascripts/sysGraph/analysePanel.js"></script>
+<script src="/javascripts/sysGraph/BussinessRoute.js"></script>
+<!--如有修改，请注意调用顺序-->
+<script src="javascripts/riskOperation/riskLogger.js"></script>
+<script src="javascripts/riskOperation/riskEstimator.js"></script>
+<script src="javascripts/riskOperation/riskOperator.js"></script>
+<script src="javascripts/sysGraph/algorithms/FindPath.js"></script>
+<script src="javascripts/riskOperation/FindNewRoute.js"></script>
+<script src="/javascripts/components/CircleDisplayer.js"></script>
+<script src="javascripts/riskOperation/graph.js"></script>
+</html>

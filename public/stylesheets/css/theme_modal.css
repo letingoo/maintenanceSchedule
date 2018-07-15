@@ -1,0 +1,56 @@
+select{
+    width: 174px;
+    height: 26px;
+}
+.modal-header{
+    margin:  -1px;
+    border-radius: 6px 6px 0 0;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    background-color: #196EB8;
+    color: #FFFFFF;
+    /*position: fixed;*/
+    z-index: 1;
+    width: 100%;
+}
+.modal-body{
+    position: relative;
+    overflow-y: scroll;
+    max-height: 500px;
+    /*padding-top: 5px;*/
+    /*top: 36px;*/
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: aliceblue;
+}
+
+.modal-footer{
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom:8px ;
+    /*position: relative;*/
+}
+.modal-footer button{
+    margin: 0 20px;
+}
+.modal-dialog{
+    width: fit-content;
+    max-width: 75%;
+}
+
+/*.th-inner{*/
+    /*width: max-content;*/
+/*}*/
+.fixed-table-toolbar >div button{
+    padding:3px 12px;
+}
+.fixed-table-toolbar >div input{
+    padding: 3px 12px;
+    height: 28px;
+}
+
+.btn-tableExport{
+    padding: 3px 12px;
+
+}

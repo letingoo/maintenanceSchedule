@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <title>Title</title>
+    <style>
+        .func-panel{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row show-grid">
+            <div class="func-panel col-xs-9 col-md-9">
+                <!--<button class="btn-edit btn"type="button" data-toggle="modal" >编辑条目</button>-->
+                <button class="btn-add btn" type="button" data-toggle="modal" data-target="#modal_netElement">增加条目</button>
+                <button class="btn-save btn" type="button">保存更改</button>
+                <!--<button class="btn-delete btn" type="button">删除选中条目</button>-->
+            </div>
+            <!--<div class="canvas-panel col-xs-9 col-md-9">-->
+
+        </div>
+
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+
+        </div>
+        <table class="table" id="list_MaintenanceRecord"></table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="modal_MaintenanceRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    检修单
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal modal-form" method="post" action="/validateform">
+                    <fieldset>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" >id</label>
+                            <div class="controls">
+                                <input type="text" name="id"  placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <!-- Text input-->
+                            <label class="control-label" for="input01">检修票据编号</label>
+                            <div class="controls">
+                                <input type="text"  name="idNo" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">工作内容</label>
+                            <div class="controls">
+                                <input type="text"  name="rContent" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">申请单位</label>
+                            <div class="controls">
+                                <input type="text"  name="deptName" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">申请人</label>
+                            <div class="controls">
+                                <input type="text"  name="deptMan" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">工作地点</label>
+                            <div class="controls">
+                                <input type="text"  name="rPlace" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">检修类别</label>
+                            <div class="controls">
+                                <input type="text"  name="rType" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">检修单类型</label>
+                            <div class="controls">
+                                <input type="text"  name="repairType" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">设备名称</label>
+                            <div class="controls">
+                                <input type="text"  name="deviceName" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">联系人</label>
+                            <div class="controls">
+                                <input type="text"  name="linkMan" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">移动电话</label>
+                            <div class="controls">
+                                <input type="text"  name="mobilePhone" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <!-- Select Basic -->
+                            <label class="control-label">工作移动电话</label>
+                            <div class="controls">
+                                <input type="text"  name="linkWaymobile" placeholder="" class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="submitBtn"  class="btn btn-submit" >
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/util.js"></script>
+<script src="/javascripts/Resources/MaintenanceRecord.js"></script>
+
+</html>

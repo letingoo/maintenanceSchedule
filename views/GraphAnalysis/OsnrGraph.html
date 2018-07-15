@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <link href="/stylesheets/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_graph.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_button.css" rel="stylesheet">
+    <link href="/stylesheets/css/theme_modal.css" rel="stylesheet">
+    <style>
+        body{
+            height:100%;
+            width: 100%;
+            position: absolute;
+            overflow-y: hidden;
+            background-color: aliceblue;
+        }
+        .modal::-webkit-scrollbar {display:none}
+        .canvas-panel>div{
+            padding: 5px;
+        }
+        .modal{
+            outline: none;
+        }
+        .network-panel {
+            /*background-color: rgba(86,61,124,.15);*/
+            /*border: 1px solid #ddd;*/
+            /*border: 1px solid rgba(86,61,124,.2);*/
+            border-radius: 5px;
+            position:relative;
+            /*overflow必须为visible 不然会引起IE11的移位问题*/
+            overflow: visible;
+            height: 90%;
+            width: 100%;
+            border-radius: inherit;
+        }
+        .row{
+            height: 100%;
+        }
+        .container-fluid{
+            height:100%;
+        }
+        .dropdown-menu li{
+            text-align: center;
+        }
+
+        .func-panel{
+            height:10%;
+            min-height: max-content;
+            width: 100%;
+            padding: inherit;
+            position: relative;
+        }
+        /*.func-panel ul li{*/
+            /*margin-left: 5px;*/
+        /*}*/
+        .canvas-panel{
+            height: 100%;
+            padding:0;
+        }
+        #accordion{
+            display: none;
+            height:90%;
+        }
+        #accordion div{
+            padding: 0;
+            margin: 0;
+            /*background-color:#ffffff;*/
+
+        }
+        #accordion .panel-title{
+            font-size: 14px;
+        }
+        #accordion .panel-body{
+            background-color:#ffffff;
+        }
+        #accordion .panel{
+            padding: 2px;
+        }
+        .panel-osnr{
+            /*background-color: rgba(86,61,124,.15);*/
+            border: 1px solid #ddd;
+            border: 1px solid rgba(86,61,124,.2);
+            border-radius: 5px;
+            overflow-y: scroll;
+        }
+
+
+        table{
+            font-size: 13px;
+        }
+        .modal-footer{
+            text-align: center;
+        }
+        .modal-s .modal-dialog{
+            width: 250px;
+        }
+
+        .panel-osnr{
+            width: 100%;
+        }
+
+
+        /*#nxTableDiv{margin:0 0 20px;line-height:18px;}*/
+        #nxTableDiv .scroll{
+            max-height:330px;
+            overflow-y:hidden;
+        }
+
+        #nxTableDiv table{
+            width:100%;
+            table-layout:fixed;
+        }
+
+        #nxTableDiv .nxTh1, #nxTableDiv .nxTd1{width:420px;}
+        #nxTableDiv .nxTh2, #nxTableDiv .nxTd2{width:120px;}
+        #nxTableDiv .nxTh3, #nxTableDiv .nxTd3{width:120px;}
+        #nxTableDiv .nxTh4 {width: 110px}
+        #nxTableDiv .nxTd4{width: calc(110px);}
+
+        .modal::-webkit-scrollbar {display:none}
+
+    </style>
+    <title>光通道仿真及优化</title>
+
+
+
+
+</head>
+<body >
+<div class="container-fluid ">
+    <div class="tree-panel col-xs-3 col-md-3">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-primary">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h5 class="panel-title">
+                        <b> 单通道分析</b>
+                        <b style="float: right" class="left-close-button">x  </b>
+                    </h5>
+
+
+                </div>
+                <div id="collapseOne" class="panel-collapse  collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <table class="table" id="bus_list">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h5 class="panel-title">
+                        <b>全网通道可用性分析</b>
+                        <b style="float: right" class="left-close-button">x  </b>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <table class="table" id="bus_invalid_list">
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h5 class="panel-title">
+                        <b>光通道调整</b>
+                        <b style="float: right" class="left-close-button">x  </b>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <table class="table" id="bus_adjust_list">
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="canvas-panel col-xs-12 col-md-12">
+        <div class=" col-xs-12 col-md-12 func-panel  ">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        光通道管理 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" id="bus_create">新增光通道</a></li>
+                        <li><a href="#" id="bus_delete">删除光通道</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" id="bus_ana" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="active"><a href="#">单通道分析</a></li>
+                <li role="presentation" id="bus_invalid_ana" class="active" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><a href="#">全网通道可用性分析</a></li>
+                <li role="presentation" id="bus_adjust" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="active"><a href="#">光通道调整</a></li>
+                <li role="presentation" class="active"><a href="#" id="nxModalShowButton">N-X分析</a></li>
+                <li role="presentation" id="refreshGraph" class="active" ><a href="#">刷新全网</a></li>
+
+            </ul>
+        </div>
+        <div class="network-panel col-xs-9 col-md-9" >
+        </div>
+    </div>
+    <!--双击光通道详细信息底栏-->
+    <div id="osnr_spec_bus" class="panel-osnr">
+        <table class="table" id="osnr_bus_list"></table>
+    </div>
+    <!--新增光通道策略选择底栏-->
+    <div id="osnr_spec_method" class="c">
+
+
+        <table class="table" id="osnr_method_list"></table>
+        <div>
+            <ul class="nav nav-pills dropup">
+                <li role="presentation" class="active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        策略选择 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" >负载均衡</a></li>
+                        <li><a href="#" >最小跳数</a></li>
+                        <li><a href="#" >最短路径</a></li>
+                    </ul>
+                </li>
+
+                <li role="presentation" class="active data-submit"><a href="#">确定</a></li>
+                <li role="presentation" class="active data-dismiss"><a href="#">取消</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!--光通道调整底栏-->
+    <div id="bus_adjust_stragedy" class="panel-osnr" >
+        <table class="table" id="adjust_method_list"></table>
+        <div>
+            <ul class="nav nav-pills dropup">
+                <li role="presentation" class="active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        策略选择 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" >负载均衡</a></li>
+                        <li><a href="#" >最小跳数</a></li>
+                        <li><a href="#" >最短路径</a></li>
+                    </ul>
+                </li>
+
+                <li role="presentation" class="active data-submit"><a href="#">确定</a></li>
+                <li role="presentation" class="active data-dismiss"><a href="#">取消</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+</div>
+</div>
+<!--新增光通道弹窗-->
+<div class="modal fade modal-s" id="modal_bus_generate" role="dialog" aria-labelledby="modal_element_spec" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    新增光通道
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form" id="form_bus_generate">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" >光通道名称</label>
+                            <div class="controls">
+                                <input type="text"   name="bussinessName"  class="input-xlarge">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >起始站点</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="AendName"  class="input-xlarge">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >终止站点</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="ZendName"  class="input-xlarge">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">光通道带宽</label>
+                            <div class="controls">
+                                <select class="input-xlarge"   name="bussinessRate"></select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >输入功率(dB)</label>
+                            <div class="controls">
+                                <input type="text"   name="inputPower"  class="input-xlarge">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >频点</label>
+                            <div class="controls">
+                                <input type="text"   name="channelFrequency"  class="input-xlarge">
+                            </div>
+                        </div>
+
+                        <label class="control-label">所属环</label>
+                        <div class="controls">
+                            <div class="controls">
+                                <select class="input-xlarge" name="circleId" >
+                                    <option>北环</option>
+                                    <option>东环</option>
+                                    <option>西环</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-submit" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--设备/链路onsr信息弹窗-->
+<div class="modal modal-s fade" id="modal_element_spec_equip"  role="dialog" aria-labelledby="modal_element_spec" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    站点信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form">
+                    <fieldset>
+                        <!--<div id="legend" class="">-->
+                            <!--<legend class="">站点信息</legend>-->
+                        <!--</div>-->
+                        <input type="hidden"  name="versionDictId"   value="">
+                        <input type="hidden"  name="creatorName"   value="">
+                        <div class="control-group">
+                            <label class="control-label" >站点名称</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" name="nodeName"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >输入功率</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="inputPower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >输出功率</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="outputPower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >设备增益</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="gain"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >噪声系数</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="noisePower"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="modal modal-s fade" id="modal_element_spec_link" role="dialog" aria-labelledby="modal_element_spec" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    链路信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal modal-form">
+                    <fieldset>
+
+                        <input type="hidden"  name="versionDictId"   value="">
+                        <input type="hidden"  name="creatorName"   value="">
+                        <div class="control-group">
+                            <label class="control-label" >链路名称</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" name="linkName"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >链路长度</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="linkLength"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >链路损耗值</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="linkLoss"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >频点占用率</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="frequency"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >占用频点</label>
+                            <div class="controls">
+                                <input type="text" contenteditable="false" placeholder="" name="versionDictName"  class="input-xlarge">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--光通道osnr信息弹窗-->
+<div class="modal fade" id="modal_osnr_spec" role="dialog" aria-labelledby="modal_bus_spec" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h4 class="modal-title" >
+                    光通道OSNR详细信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table id="bus_osnr_spec_list">
+                </table>
+            </div>
+            <div class="modal-footer" align="center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
+
+<!-- N-X 分析弹窗 -->
+<div class="modal fade" id="nxModal" tabindex="-1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px; height:460px; left: -100px">
+            <div  class="modal-header">
+                <button type="button" class="close pull-right" aria-label="close" id="nxAnalyseCloseButton">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" >
+                    N-X分析
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 500px; width: 800px; max-height: 400px;" >
+                <div>
+                    <button type="button" class="btn btn-default" id="nxAanlyseButton">分析</button>
+                    <label style="margin-left: 40px">故障数目</label>
+                    <select id="faultNumber" style="width: 50px">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                    <label style="margin-left: 40px">故障类型</label>
+                    <select id="faultType" style="width: 100px">
+                        <option value="请选择">请选择</option>
+                        <option value="0">设备</option>
+                        <option value="1">链路</option>
+                    </select>
+
+
+                </div>
+
+
+                <div id="nxTableDiv" style="max-height: 400px; display: block;" >
+                    <table class="table table-bordered" style="margin-bottom: 0px">
+                        <thead>
+                            <th class="nxTh1">出故障的设备或者复用段</th>
+                            <th class="nxTh2">影响的业务数</th>
+                            <th class="nxTh3">可恢复的业务数</th>
+                            <th class="nxTh4">恢复率</th>
+                        </thead>
+                    </table>
+
+
+                        <table class="table table-bordered">
+                            <tbody id="nxTableBody">
+
+                            </tbody>
+                        </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--N-X 某一故障信息的具体信息弹窗-->
+<div class="modal fade" id="nxInfoModal" tabindex="-1" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="nxInfoModalTitle">
+                    选择具体分析的项
+                </h5>
+            </div>
+
+
+
+            <div class="modal-body" style="height: 350px; overflow-y: scroll; width: 600px" >
+
+                <table class="table table-bordered" id="nxInfoTable">
+                    <thead>
+                    <tr>
+                        <th width="50%">受影响业务</th>
+                        <th>可恢复业务</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="nxInfoTableBody">
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="modal fade" id="busDeleteModal" tabindex="-1" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title" >
+                        删除光通道
+                    </h5>
+                </div>
+
+
+                <div class="modal-body" style="height: 550px; overflow-y: scroll; " >
+                    <table class="table" id="bussinessList"></table>
+
+                </div>
+
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default"  id="btn-delete-submit">确定</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 配合N-X分析，选择具体分析的设备/复用段或者其组合 -->
+<div>
+    <div class="modal fade" id="nxSelectModal" tabindex="-1" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 600px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title" id="nxSelectModalTitle">
+                        请选择
+                    </h5>
+                </div>
+
+
+
+                <div class="modal-body" style="height: 550px; overflow-y: scroll; " >
+
+                    <input id="searchNXItemInput" type="text" class="form-control" placeholder="请输入搜索内容"/>
+
+                    <table class="table table-bordered" id="nxSelectTable" style="margin-top: 10px">
+                    </table>
+
+
+                </div>
+
+                <div class="modal-footer" align="center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="nxSelectAnalyseButton">确定</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+<script src="/javascripts/lib/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/lib/bootstrap.min.js"></script>
+<script src="javascripts/lib/twaver.js"></script>
+<script src="/javascripts/lib/bootstrap-table.js"></script>
+<script src="/javascripts/lib/bootstrap-table-zh-CN.js"></script>
+<script src="/javascripts/lib/jquery-ui.min.js"></script>
+<script src="/javascripts/lib/bluebird.min.js"></script>
+<script type="text/javascript"  src="/javascripts/util.js"></script>
+<script src="/javascripts/const_args.js"></script>
+<script src="/javascripts/sysGraph/NetAnalyse_webpack.js"></script>
+<script src="/javascripts/sysGraph/algorithms/FindPath.js"></script>
+<script src="/javascripts/sysGraph/analysePanel.js"></script>
+<script src="/javascripts/components/CircleDisplayer.js"></script>
+<script src="javascripts/sysGraph/osnrGraph.js"></script>
+<script src="javascripts/NXAnalyse/NXAnalyse.js"></script>
+<script src="javascripts/sysGraph/BussinessRoute.js"></script>
+</html>
